@@ -17,9 +17,10 @@ import Button from './Button';
 
 export default function Map() {
   const {cities} = useCities();
-  const [mapPosition,setMapPosition] = useState([41, 28]);
+  const [mapPosition,setMapPosition] = useState([48,2]);
   const {isLoading:isLoadingPosition,position:geolocationPosition,getPosition} = useGeolocation();
   const {mapLat,mapLng} = useUrlPosition();
+
   useEffect(() => {
     if(mapLat && mapLng){
       setMapPosition([mapLat, mapLng])
@@ -38,7 +39,7 @@ export default function Map() {
       </Button>}
       <MapContainer 
         center={mapPosition}
-        zoom={6} 
+        zoom={4} 
         scrollWheelZoom={true} 
         className={styles.map}>
         <TileLayer
@@ -70,6 +71,7 @@ export default function Map() {
 function ChangeCenter({position}){
   const map = useMap()
   map.setView(position)
+  console.log(position)
   return null
 }
 
@@ -77,6 +79,7 @@ function DetectClick(){
   const navigate = useNavigate();
   useMapEvents({
     click: (e) => {
+      console.log(e.latlng)
       navigate(`form?lat=${e.latlng.lat}&lng=${e.latlng.lng}`)
   }})
 }
